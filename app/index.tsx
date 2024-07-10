@@ -4,8 +4,8 @@ import { AuthContext } from '@/context/AuthContext';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedView } from '@/components/ThemedView';
-import { ActivityIndicator, Button, MD2Colors, TextInput } from 'react-native-paper';
 import {router } from "expo-router"
+import { Banner } from 'react-native-paper';
 
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
 
   useEffect(() => {
     if (authenticated) {
-      router.push("/explore")
+      router.push("/home")
     }
   }, [authenticated]);
   
@@ -22,9 +22,9 @@ export default function Home() {
   const handleSignIn = (credential: AppleAuthentication.AppleAuthenticationCredential) => {    
     if (credential.authorizationCode) { 
     setAuthenticated(true);
-    router.push("/explore")
+    router.push("/home")
     } else {
-      router.push("/login")
+      setError('Invalid credentials')
     }
   };
 
@@ -38,6 +38,17 @@ export default function Home() {
         />
       }
       >
+        {error ?     <Banner
+      visible={Boolean(error)}
+      actions={[
+        {
+          label: 'Dismiss',
+          onPress: () => setError(''),
+        },
+      ]}
+      >
+      There was a problem Signing in. Please Try again.
+    </Banner> : null}
       <ThemedView style={{height: 400, width:"auto"}}>
         <View style={{ flex: 1, justifyContent: "center", alignItems:"center"}}>
           <AppleAuthentication.AppleAuthenticationButton
