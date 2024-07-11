@@ -1,52 +1,64 @@
-import { Image, StyleSheet, View } from 'react-native';
-import {useState, useEffect, useContext} from 'react';
+import { View, Text, Pressable } from 'react-native';
+import { useEffect, useContext } from 'react';
+import { router } from 'expo-router'
+import { styled } from 'nativewind';
 
-import * as AppleAuthentication from 'expo-apple-authentication';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedView } from '@/components/ThemedView';
-import { Text } from 'react-native-paper';
 import { AuthContext } from '@/context/AuthContext';
-import {router } from 'expo-router'
+import { Icon, MD3Colors } from 'react-native-paper';
 
+const StyledTitle = styled(Text);
+
+const StyledView = styled(View);
+const StyledThemedView = styled(ThemedView);
+const StyledIcon = styled(Icon)
 
 export default function HomeScreen() {
   const auth = useContext(AuthContext);
-  
+
   useEffect(() => {
     if (!auth.authenticated) {
       router.push("/index");
     }
-    
+
   }, [auth.authenticated])
 
+  const items = [{
+    title: 'Manufacturers',
+    icon: 'factory',
+    href: '/manufacturer'
+  }, {
+    title: 'Clients',
+    icon: 'account',
+    href: '/manufacturer'
+  }, {
+    title: 'Orders',
+    icon: 'note-text',
+    href: '/manufacturer'
+  }, {
+    title: 'Prospects',
+    icon: 'magnify-plus',
+    href: '/manufacturer'
+  }]
+
   return (
-    <ThemedView style={{height: '100%', width:"auto"}}>
-      <View style={{ flex: 1, justifyContent: "center", alignItems:"center"}}>
-        <Text>Home Screen</Text>
-      </View>
-    </ThemedView>
+    <StyledThemedView className='pt-8 h-full w-full flex flex-1'>
+      <StyledView>
+        <StyledTitle className="text-white font-bold text-3xl text-center">Home</StyledTitle>
+      </StyledView>
+      <StyledView className="flex-1 justify-center items-center">
+        <StyledView className="pt-3 flex-1 flex-row gap-x-1 gap-y-12 justify-evenly content-center flex-wrap">
+          {items.map((item, index) => (
+            <Pressable key={index} onPress={() => router.push(item.href)}>
+              <StyledView className="bg-white rounded-lg p-4 mt-4 h-36 w-36 justify-around items-center" >
+                <StyledTitle className="text-black font-bold text-lg text-center">{item.title}</StyledTitle>
+                <StyledIcon source={item.icon} color={MD3Colors.tertiary50} size={30} />
+              </StyledView>
+            </Pressable>
+          ))}
+
+        </StyledView>
+      </StyledView>
+    </StyledThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-  button: {
-    width: 200,
-    height: 44,
-  },
-});

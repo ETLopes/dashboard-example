@@ -6,6 +6,9 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedView } from '@/components/ThemedView';
 import {router } from "expo-router"
 import { Banner } from 'react-native-paper';
+import { styled } from 'nativewind';
+
+const StyledText = styled(Text);
 
 
 export default function Home() {

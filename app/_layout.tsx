@@ -5,12 +5,13 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { PaperProvider } from 'react-native-paper';
-import {AuthContext} from "@/context/AuthContext";
-
+import { AuthContext } from "@/context/AuthContext";
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -19,6 +20,8 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
+
+  const backgroundColor = useThemeColor({}, 'background');
 
   useEffect(() => {
     if (loaded) {
@@ -31,16 +34,19 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthContext.Provider value={{ authenticated, setAuthenticated }}>
-      <PaperProvider>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </ThemeProvider>
-      </PaperProvider>
-    </AuthContext.Provider>
+
+    <SafeAreaView style={{ flex: 1, backgroundColor }}>
+      <AuthContext.Provider value={{ authenticated, setAuthenticated }}>
+        <PaperProvider>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <Stack>
+              <Stack.Screen name="index" options={{ headerShown: false }} />
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </ThemeProvider>
+        </PaperProvider>
+      </AuthContext.Provider>
+    </SafeAreaView>
   );
 }
