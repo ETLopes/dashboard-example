@@ -10,7 +10,6 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -42,6 +41,8 @@ export default function RootLayout() {
             <Stack screenOptions={({ route }) => ({
               headerShown: route.name !== '(tabs)' ? true : false,
               headerBackTitle: 'Back',
+              headerTitle: route.name !== 'index' ? route.name.charAt(0).toUpperCase() + route.name.slice(1) : 'Home',
+
             })}>
               <Stack.Screen name="index" options={{ headerShown: false }} />
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
