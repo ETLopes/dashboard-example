@@ -39,7 +39,10 @@ export default function RootLayout() {
       <AuthContext.Provider value={{ authenticated, setAuthenticated }}>
         <PaperProvider>
           <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <Stack>
+            <Stack screenOptions={({ route }) => ({
+              headerShown: route.name !== '(tabs)' ? true : false,
+              headerBackTitle: 'Back',
+            })}>
               <Stack.Screen name="index" options={{ headerShown: false }} />
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="+not-found" />
@@ -47,6 +50,6 @@ export default function RootLayout() {
           </ThemeProvider>
         </PaperProvider>
       </AuthContext.Provider>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 }
